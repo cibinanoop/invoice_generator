@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Luxe Invoice — Professional Invoice Generator</title>
+  <meta name="description" content="Create elegant professional invoices and download them as PDF or PNG.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">L</span><div><strong>LUXE</strong><small>INVOICE STUDIO</small></div></div>
+    <div class="top-actions">
+      <button class="ghost-btn" id="newInvoice">New invoice</button>
+      <button class="primary-btn" id="downloadPdfTop">Download PDF</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <aside class="editor">
+      <div class="editor-heading">
+        <div><span class="eyebrow">INVOICE BUILDER</span><h1>Craft your invoice.</h1></div>
+        <span class="status-pill">● Saved locally</span>
+      </div>
+
+      <section class="panel">
+        <div class="panel-title"><span>01</span><h2>Business</h2></div>
+        <div class="grid two">
+          <label>Business name<input id="businessName" value="Aurelia Studio"></label>
+          <label>Invoice number<input id="invoiceNumber" value="INV-2026-001"></label>
+        </div>
+        <label>Business details<textarea id="businessDetails" rows="2">14 Rose Avenue, Kochi, Kerala 682001
+hello@aureliastudio.com · +91 98765 43210</textarea></label>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title"><span>02</span><h2>Client</h2></div>
+        <div class="grid two">
+          <label>Client name<input id="clientName" value="Northstar Creative"></label>
+          <label>Client email<input id="clientEmail" value="accounts@northstarcreative.com"></label>
+        </div>
+        <label>Billing address<textarea id="clientAddress" rows="2">21 Marine Drive, Kochi, Kerala 682031</textarea></label>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title"><span>03</span><h2>Dates & currency</h2></div>
+        <div class="grid three">
+          <label>Issue date<input id="issueDate" type="date"></label>
+          <label>Due date<input id="dueDate" type="date"></label>
+          <label>Currency<select id="currency"><option value="₹">INR ₹</option><option value="$">USD $</option><option value="€">EUR €</option><option value="£">GBP £</option></select></label>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title"><span>04</span><h2>Line items</h2></div>
+        <div id="itemsEditor"></div>
+        <button class="add-btn" id="addItem">＋ Add item</button>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title"><span>05</span><h2>Totals & notes</h2></div>
+        <div class="grid two">
+          <label>Tax (%)<input id="taxRate" type="number" min="0" step="0.01" value="18"></label>
+          <label>Discount<input id="discount" type="number" min="0" step="0.01" value="0"></label>
+        </div>
+        <label>Payment notes<textarea id="notes" rows="3">Payment due within 15 days. Thank you for choosing Aurelia Studio.</textarea></label>
+        <label>Accent color<div class="color-row"><input id="accent" type="color" value="#1d3028"><span id="accentHex">#1D3028</span></div></label>
+      </section>
+
+      <div class="editor-footer">
+        <button class="secondary-btn" id="downloadPng">Download PNG</button>
+        <button class="primary-btn wide" id="downloadPdf">Download PDF</button>
+      </div>
+    </aside>
+
+    <section class="preview-wrap">
+      <div class="preview-toolbar"><span>LIVE PREVIEW</span><div><button id="zoomOut">−</button><span id="zoomValue">100%</span><button id="zoomIn">＋</button></div></div>
+      <div class="canvas-area">
+        <article class="invoice" id="invoice">
+          <div class="invoice-accent"></div>
+          <div class="invoice-head">
+            <div>
+              <div class="invoice-logo" id="previewBusinessInitial">A</div>
+              <div class="preview-business" id="previewBusiness">Aurelia Studio</div>
+              <div class="muted pre" id="previewBusinessDetails"></div>
+            </div>
+            <div class="invoice-meta">
+              <div class="invoice-word">INVOICE</div>
+              <div class="meta-row"><span>Invoice</span><strong id="previewNumber"></strong></div>
+              <div class="meta-row"><span>Issued</span><strong id="previewIssue"></strong></div>
+              <div class="meta-row"><span>Due</span><strong id="previewDue"></strong></div>
+            </div>
+          </div>
+
+          <div class="bill-strip">
+            <div><span class="label">BILLED TO</span><strong id="previewClient"></strong><span id="previewClientEmail" class="muted"></span><span id="previewClientAddress" class="muted pre"></span></div>
+            <div class="payment-badge">PAYMENT DUE</div>
+          </div>
+
+          <table class="invoice-table">
+            <thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th class="right">Amount</th></tr></thead>
+            <tbody id="previewItems"></tbody>
+          </table>
+
+          <div class="bottom-grid">
+            <div class="notes"><span class="label">NOTES</span><p id="previewNotes"></p></div>
+            <div class="totals">
+              <div><span>Subtotal</span><strong id="previewSubtotal"></strong></div>
+              <div><span>Discount</span><strong id="previewDiscount"></strong></div>
+              <div><span>Tax</span><strong id="previewTax"></strong></div>
+              <div class="grand"><span>Total due</span><strong id="previewTotal"></strong></div>
+            </div>
+          </div>
+
+          <footer class="invoice-footer">
+            <span>Thank you for your business.</span>
+            <span id="previewContact"></span>
+          </footer>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">Invoice saved</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
